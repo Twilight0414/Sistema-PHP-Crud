@@ -43,14 +43,12 @@
                             <i class="bi bi-box-seam text-success me-2"></i>
                             <a href="gerenciar_produtos.php" class="text-success">Gerenciar Produtos</a>
                         </li>
-                        <li class="mb-2">
-                            <i class="bi bi-graph-up-arrow text-success me-2"></i>
-                            <a href="relatorios.php" class="text-success">Relatórios de Vendas</a>
-                        </li>
                     </ul>
                 </div>
             </div>
         </div>
+
+        
     </div>
 
     <!-- Botão de Logout -->

@@ -12,6 +12,7 @@ $userToEdit = null;
 if (isset($_GET['edit'])) {
     $userToEdit = getUser($_GET['edit']);
 }
+
 ?>
 
 <!DOCTYPE html>

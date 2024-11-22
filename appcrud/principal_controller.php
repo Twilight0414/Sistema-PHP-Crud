@@ -3,6 +3,8 @@
 //Prepara pa gerenciar a sessão
 session_start();
 
+include 'db.php';
+
 // Verifica se o usuário está registrado na sessão (logado)
 if (!isset($_SESSION['email'])) {
     header("Location: index.php");
