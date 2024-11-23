@@ -1,18 +1,26 @@
 <?php
+session_start(); // Inicia a sessão
+
+// Verifica se o usuário está logado
+if (!isset($_SESSION['user_logged_in']) || $_SESSION['user_logged_in'] !== true) {
+    // Redireciona para a página de login caso o usuário não esteja autenticado
+    header('Location: login.php');
+    exit(); // Garante que o restante do código não será executado
+}
+
 include 'usuarios_controller.php';
 include 'header.php';
 
-//Pega todos os usuários para preencher os dados da tabela
+// Pega todos os usuários para preencher os dados da tabela
 $users = getUsers();
 
-//Variável que guarda o ID do usuário que será editado
+// Variável que guarda o ID do usuário que será editado
 $userToEdit = null;
 
 // Verifica se existe o parâmetro edit pelo método GET
 if (isset($_GET['edit'])) {
     $userToEdit = getUser($_GET['edit']);
 }
-
 ?>
 
 <!DOCTYPE html>

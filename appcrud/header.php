@@ -6,7 +6,7 @@
     <title>Página Principal</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         /* Estilo do header */
@@ -47,6 +47,10 @@
         .nav-link:hover {
             color: #ffc107;
         }
+
+        .nav-item .btn-link {
+            color: #fff;
+        }
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -61,6 +65,9 @@
             <a class="navbar-brand" href="principal.php">Home</a>
             <a class="navbar-brand" href="usuarios_cadastro.php">Usuários</a>
             <a class="navbar-brand" href="produtos_cadastro.php">Produtos</a>
+            <a class="navbar-brand" href="carrinho_cadastro.php">
+                <i class="bi bi-cart" style="font-size: 1.5rem;"></i> Carrinho
+            </a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
@@ -72,5 +79,16 @@
             </div>
         </div>
     </nav>
+
+    <?php
+    // Verificação e destruição da sessão para logout
+    if (isset($_POST['logout'])) {
+        session_start();
+        session_unset();
+        session_destroy();
+        header("Location: principal.php"); // Redireciona para a página principal após o logout
+        exit();
+    }
+    ?>
 </body>
 </html>

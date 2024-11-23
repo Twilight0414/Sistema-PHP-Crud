@@ -1,32 +1,50 @@
 <?php
 session_start();
-include 'db.php';
+ini_set('display_errors', 1); // Habilita a exibição de erros
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
+include 'db.php'; // Verifique se o caminho está correto.
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $senha = $_POST['senha'];
 
+    if (empty($email) || empty($senha)) {
+        echo "Email e senha são obrigatórios.";
+        exit();
+    }
+
     // Prepara e executa a consulta na tabela de usuários
-    $stmt = $conn->prepare("SELECT nome FROM usuarios WHERE email = ? AND senha = ?");
-    $stmt->bind_param("ss", $email, $senha);
+    $stmt = $conn->prepare("SELECT nome, senha FROM usuarios WHERE email = ?");
+    if (!$stmt) {
+        die("Erro na preparação da consulta: " . $conn->error);
+    }
+
+    $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($nome);
+        $stmt->bind_result($nome, $hashSenha);
         $stmt->fetch();
-        
-        //Registra o usuário na sessão
-        $_SESSION['email'] = $email;
-        $_SESSION['nome'] = $nome;
 
-        header("Location: principal.php");
-        exit();
+        // Comparação direta das senhas, já que estão em texto puro no banco
+        if ($senha === $hashSenha) {
+            $_SESSION['user_logged_in'] = true;
+            $_SESSION['email'] = $email;
+            $_SESSION['nome'] = $nome;
+
+            header("Location: principal.php");
+            exit();
+        } else {
+            echo "Senha inválida.";
+        }
     } else {
-        echo "Login ou senha inválidos. Tente novamente.";
+        echo "Usuário não encontrado.";
     }
+
     $stmt->close();
 }
 $conn->close();
 ?>
-
