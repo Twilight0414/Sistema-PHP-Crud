@@ -34,6 +34,7 @@ $result = $conn->query($sql);
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title text-dark mb-3" style="font-size: 1.2rem; font-weight: 600;"><?php echo htmlspecialchars($produto['nome']); ?></h5>
                             <p class="card-text text-muted" style="font-size: 0.9rem; margin-bottom: 1rem;"><strong>Marca:</strong> <?php echo htmlspecialchars($produto['marca']); ?></p>
+                            <p class="card-text text-muted" style="font-size: 0.9rem; margin-bottom: 1rem;"><strong>Modelo:</strong> <?php echo htmlspecialchars($produto['modelo']); ?></p>
                             <p class="card-text" style="font-size: 0.9rem; flex-grow: 1;"><?php echo htmlspecialchars($produto['descricao']); ?></p>
                             <p class="card-text text-primary" style="font-size: 1.1rem; font-weight: 600;">R$ <?php echo number_format($produto['valorunitario'], 2, ',', '.'); ?></p>
                             <a href="#" class="btn btn-primary mt-3">Comprar</a>
@@ -47,7 +48,8 @@ $result = $conn->query($sql);
         }
         ?>
 
-        <!-- Seção de cartões -->
+    </div>
+    <!-- Seção de cartões -->
     <div class="row">
         <!-- Card de informações do usuário -->
         <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
@@ -85,8 +87,6 @@ $result = $conn->query($sql);
             </div>
         </div>
     </div>
-    </div>
-
 </div>
 
 <?php

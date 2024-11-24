@@ -27,16 +27,16 @@ CREATE TABLE `produtos` (
 
 CREATE TABLE `compras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nropedido` varchar(50) NOT NULL,   -- Número do pedido (como string, para permitir letras e números)
-  `usuario` int(11) NOT NULL,         -- ID do usuário, assumindo que seja uma chave estrangeira
-  `idproduto` int(11) NOT NULL,       -- ID do produto, assumindo que seja uma chave estrangeira
-  `quantidade` int(11) NOT NULL,      -- Quantidade comprada
-  `valorUnitario` decimal(10,2) NOT NULL,  -- Valor unitário do produto na compra
-  `dataCompra` datetime NOT NULL,     -- Data e hora da compra
-  `datapagamento` datetime DEFAULT NULL, -- Data e hora do pagamento, pode ser NULL se ainda não pago
+  `nropedido` varchar(50) NOT NULL,   
+  `usuario` int(11) NOT NULL,        
+  `idproduto` int(11) NOT NULL,       
+  `quantidade` int(11) NOT NULL,      
+  `valorUnitario` decimal(10,2) NOT NULL,  
+  `dataCompra` datetime NOT NULL,    
+  `datapagamento` datetime DEFAULT NULL, 
   PRIMARY KEY(`id`),
-  FOREIGN KEY (`usuario`) REFERENCES `usuarios`(`id`) ON DELETE CASCADE,  -- Chave estrangeira para a tabela de usuários
-  FOREIGN KEY (`idproduto`) REFERENCES `produtos`(`id`) ON DELETE CASCADE  -- Chave estrangeira para a tabela de produtos
+  FOREIGN KEY (`usuario`) REFERENCES `usuarios`(`id`) ON DELETE CASCADE,  
+  FOREIGN KEY (`idproduto`) REFERENCES `produtos`(`id`) ON DELETE CASCADE  
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 

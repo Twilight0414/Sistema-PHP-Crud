@@ -1,70 +1,54 @@
 <?php
 session_start();
-include 'db.php'; // Conexão com o banco de dados
 
-// Inicializa o carrinho se não existir
+// Inicializa o carrinho na sessão, se não existir
 if (!isset($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = [];
 }
 
-// Função para adicionar produto ao carrinho
-function adicionarAoCarrinho($idProduto, $quantidade) {
-    global $conn;
+// Adiciona produtos ao carrinho
+if (isset($_POST['adicionar_ao_carrinho'])) {
+    $produto = [
+        'nome' => $_POST['nome'],
+        'valor' => $_POST['valor'],
+        'quantidade' => 1, // Começa com 1 unidade
+    ];
 
-    // Verificar se o produto já está no carrinho
-    if (isset($_SESSION['carrinho'][$idProduto])) {
-        // Se o produto já estiver no carrinho, apenas aumenta a quantidade
-        $_SESSION['carrinho'][$idProduto]['quantidade'] += $quantidade;
+    $nomeProduto = $produto['nome'];
+    $carrinho = &$_SESSION['carrinho'];
+
+    // Verifica se o produto já está no carrinho
+    if (isset($carrinho[$nomeProduto])) {
+        $carrinho[$nomeProduto]['quantidade'] += 1; // Incrementa a quantidade
     } else {
-        // Se o produto não estiver no carrinho, adiciona-o
-        $sql = "SELECT * FROM produtos WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $idProduto);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
-
-        if ($resultado->num_rows > 0) {
-            $produto = $resultado->fetch_assoc();
-            $_SESSION['carrinho'][$idProduto] = [
-                'nome' => $produto['nome'],
-                'quantidade' => $quantidade,
-                'valorUnitario' => $produto['valorunitario'],
-                'url_img' => $produto['url_img']
-            ];
-        }
+        $carrinho[$nomeProduto] = $produto;
     }
-}
 
-// Adicionar um produto ao carrinho via POST
-if (isset($_POST['adicionar'])) {
-    $idProduto = $_POST['idProduto'];
-    $quantidade = $_POST['quantidade'];
-
-    adicionarAoCarrinho($idProduto, $quantidade);
-
-    // Redireciona para a página de carrinho
-    header('Location: carrinho_cadastro.php');
+    echo json_encode(['success' => true, 'mensagem' => 'Produto adicionado ao carrinho!']);
     exit();
 }
 
-// Remover um produto do carrinho
-if (isset($_GET['remover'])) {
-    $idProduto = $_GET['remover'];
+// Remove um produto do carrinho
+if (isset($_POST['remover_do_carrinho'])) {
+    $nomeProduto = $_POST['nome'];
+    unset($_SESSION['carrinho'][$nomeProduto]);
 
-    // Remove o produto do carrinho
-    unset($_SESSION['carrinho'][$idProduto]);
-
-    // Redireciona de volta para a página de carrinho
-    header('Location: carrinho_cadastro.php');
+    echo json_encode(['success' => true, 'mensagem' => 'Produto removido do carrinho!']);
     exit();
 }
 
-// Calcula o total do carrinho
-function calcularTotalCarrinho() {
-    $total = 0;
-    foreach ($_SESSION['carrinho'] as $produto) {
-        $total += $produto['quantidade'] * $produto['valorUnitario'];
+// Atualiza a quantidade de um produto
+if (isset($_POST['atualizar_quantidade'])) {
+    $nomeProduto = $_POST['nome'];
+    $novaQuantidade = (int)$_POST['quantidade'];
+
+    if ($novaQuantidade <= 0) {
+        unset($_SESSION['carrinho'][$nomeProduto]); // Remove o produto se a quantidade for 0
+    } else {
+        $_SESSION['carrinho'][$nomeProduto]['quantidade'] = $novaQuantidade;
     }
-    return $total;
+
+    echo json_encode(['success' => true, 'mensagem' => 'Quantidade atualizada!']);
+    exit();
 }
 ?>

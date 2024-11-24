@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Principal</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -34,22 +33,31 @@
             font-size: 1rem;
         }
 
-        .navbar-brand {
+        .navbar-brand, .nav-link {
             font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-link {
+            text-transform: uppercase; /* Todos os itens em capslock */
+            letter-spacing: 1px;
             transition: color 0.3s ease;
         }
 
+        .navbar-brand {
+            color: #fff;
+        }
+
+        .nav-link {
+            color: #fff;
+        }
+
         .nav-link:hover {
-            color: #ffc107;
+            color: #007bff; /* Cor de hover igual ao header */
         }
 
         .nav-item .btn-link {
             color: #fff;
+        }
+
+        .nav-item .btn-link:hover {
+            color: #007bff; /* Cor de hover igual ao header */
         }
     </style>
 </head>
@@ -60,23 +68,45 @@
             <p>Gerencie seu negócio de forma eficiente</p>
         </div>
     </header>
-    <nav class="navbar navbar-expand-lg p-0 navbar-dark bg-dark">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="principal.php">Home</a>
-            <a class="navbar-brand" href="usuarios_cadastro.php">Usuários</a>
-            <a class="navbar-brand" href="produtos_cadastro.php">Produtos</a>
-            <a class="navbar-brand" href="carrinho_cadastro.php">
-                <i class="bi bi-cart" style="font-size: 1.5rem;"></i> Carrinho
-            </a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <form method="POST" action="">
-                            <button class="btn btn-link nav-link text-white" name="logout" type="submit">Logout</button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="principal.php">
+                        <i class="bi bi-house-door"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="usuarios_cadastro.php">
+                        <i class="bi bi-person"></i> Usuários
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="produtos_cadastro.php">
+                        <i class="bi bi-box-seam"></i> Produtos
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <!-- Navbar com contagem de itens no carrinho -->
+                <li class="nav-item">
+                    <a class="navbar-brand" href="carrinho_cadastro.php">
+                        <i class="bi bi-cart" style="font-size: 1.5rem; position: relative;">
+                            <span style="position: absolute; top: -5px; right: -10px; background: #ff0000; color: #fff; font-size: 0.8rem; border-radius: 50%; padding: 2px 5px;">
+                                <?php echo isset($_SESSION['carrinho']) ? array_sum(array_column($_SESSION['carrinho'], 'quantidade')) : 0; ?>
+                            </span>
+                        </i> Carrinho
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <form method="POST" action="" class="d-inline">
+                        <button class="btn btn-link nav-link text-white" name="logout" type="submit">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </button>
+                    </form>
+                </li>
+            </ul>
         </div>
     </nav>
 
