@@ -1,10 +1,9 @@
 <?php
 session_start();
 ini_set('display_errors', 1); // Habilita a exibição de erros
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL); // Exibe todos os erros
 
-include 'db.php'; // Verifique se o caminho está correto.
+include 'db.php'; // Verifique se o caminho está correto
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -35,6 +34,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION['email'] = $email;
             $_SESSION['nome'] = $nome;
 
+            // Para testar se o código chega aqui:
+            echo "Login bem-sucedido. Redirecionando...";
+
             header("Location: principal.php");
             exit();
         } else {
@@ -46,5 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $stmt->close();
 }
+
 $conn->close();
 ?>

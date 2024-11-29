@@ -35,9 +35,29 @@ CREATE TABLE `compras` (
   `dataCompra` datetime NOT NULL,    
   `datapagamento` datetime DEFAULT NULL, 
   PRIMARY KEY(`id`),
-  FOREIGN KEY (`usuario`) REFERENCES `usuarios`(`id`) ON DELETE CASCADE,  
-  FOREIGN KEY (`idproduto`) REFERENCES `produtos`(`id`) ON DELETE CASCADE  
+  FOREIGN KEY (`usuario`) REFERENCES `usuarios`(`id`),  
+  FOREIGN KEY (`idproduto`) REFERENCES `produtos`(`id`)  
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+CREATE TABLE pedidos (
+    id INT AUTO_INCREMENT PRIMARY KEY,               -- ID do pedido (chave primÃƒÂ¡ria)
+    id_usuario INT NOT NULL,                         -- ID do usuÃƒÂ¡rio que fez o pedido (referÃƒÂªncia ao usuÃƒÂ¡rio)
+    total DECIMAL(10, 2) NOT NULL,                   -- Total do pedido
+    data_pedido DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- Data e hora do pedido
+    status ENUM('pendente', 'pago', 'enviado', 'entregue', 'cancelado') DEFAULT 'pendente',  -- Status do pedido
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id)   -- Chave estrangeira para a tabela de usuÃƒÂ¡rios
+);
+
+CREATE TABLE itens_pedido (
+    id INT AUTO_INCREMENT PRIMARY KEY,              -- ID do item no pedido (chave primÃƒÂ¡ria)
+    pedido_id INT NOT NULL,                         -- ID do pedido (chave estrangeira)
+    produto_id INT NOT NULL,                        -- ID do produto (chave estrangeira)
+    quantidade INT NOT NULL,                        -- Quantidade do produto no pedido
+    subtotal DECIMAL(10, 2) NOT NULL,               -- Subtotal (quantidade * preÃƒÂ§o unitÃƒÂ¡rio)
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE,  -- Chave estrangeira para a tabela de pedidos
+    FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE RESTRICT -- Chave estrangeira para a tabela de produtos
+);
+
 
 
 

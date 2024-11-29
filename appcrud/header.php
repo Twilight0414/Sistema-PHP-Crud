@@ -1,3 +1,9 @@
+<?php
+// Inicia a sessão, mas verifica primeiro se já não foi iniciada
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,7 +12,6 @@
     <title>Página Principal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
     <style>
         /* Estilo do header */
         header {
@@ -91,16 +96,12 @@
             <ul class="navbar-nav ms-auto">
                 <!-- Navbar com contagem de itens no carrinho -->
                 <li class="nav-item">
-                    <a class="navbar-brand" href="carrinho_cadastro.php">
-                        <i class="bi bi-cart" style="font-size: 1.5rem; position: relative;">
-                            <span style="position: absolute; top: -5px; right: -10px; background: #ff0000; color: #fff; font-size: 0.8rem; border-radius: 50%; padding: 2px 5px;">
-                                <?php echo isset($_SESSION['carrinho']) ? array_sum(array_column($_SESSION['carrinho'], 'quantidade')) : 0; ?>
-                            </span>
-                        </i> Carrinho
+                    <a class="navbar-brand" href="shopcart.php">
+                        <i class="bi bi-cart" style="font-size: 1.5rem; position: relative;"></i> Carrinho
                     </a>
                 </li>
                 <li class="nav-item">
-                    <form method="POST" action="" class="d-inline">
+                    <form method="POST" action="index.php" class="d-inline">
                         <button class="btn btn-link nav-link text-white" name="logout" type="submit">
                             <i class="bi bi-box-arrow-right"></i> Logout
                         </button>
@@ -110,15 +111,5 @@
         </div>
     </nav>
 
-    <?php
-    // Verificação e destruição da sessão para logout
-    if (isset($_POST['logout'])) {
-        session_start();
-        session_unset();
-        session_destroy();
-        header("Location: principal.php"); // Redireciona para a página principal após o logout
-        exit();
-    }
-    ?>
 </body>
 </html>

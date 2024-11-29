@@ -1,12 +1,7 @@
 <?php
 session_start(); // Inicia a sessão
 
-// Verifica se o usuário está logado
-if (!isset($_SESSION['user_logged_in']) || $_SESSION['user_logged_in'] !== true) {
-    // Redireciona para a página de login caso o usuário não esteja autenticado
-    header('Location: login.php');
-    exit(); // Garante que o restante do código não será executado
-}
+
 
 include 'produtos_controller.php';
 include 'header.php';

@@ -1,6 +1,13 @@
-
 <?php
-include 'db.php';
+include 'db.php'; // Banco de dados
+// Remova o session_start() daqui
+// session_start(); 
+
+// Verifica se o usuário está logado antes de processar as ações
+if (!isset($_SESSION['user_logged_in']) || $_SESSION['user_logged_in'] !== true) {
+    header('Location: login.php');
+    exit();
+}
 
 function saveUser($nome, $telefone, $email, $senha) {
     global $conn;
@@ -49,5 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Processamento da exclusão
 if (isset($_GET['delete'])) {
     deleteUser($_GET['delete']);
+    header('Location: usuario_cadastro.php');
+    exit();
 }
 ?>
